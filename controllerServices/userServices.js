@@ -4,15 +4,33 @@ const jwtProvider=require("../config/jwtprove");
 
 const createUser = async (userData) => {
   try {
-    let {name, email, password} = userData;
-    const isUserExist = await User.findOne({ email });
+    let {
+      name,
+      email,
+      rollNO,
+      collegeName,
+      accessCode,
+      mobileNO,
+      githubusername,
+    } = userData;
 
+    const isUserExist = await User.findOne({ email });
     if (isUserExist) {
-      throw new Error("User already exist", email);
+      throw new Error("User already exists");
     }
 
-    password = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, lastname, email, password });
+    accessCode = await bcrypt.hash(accessCode, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      accessCode,
+      rollNO,
+      collegeName,
+      mobileNO,
+      githubusername,
+    });
+
     console.log("created user", user);
     return user;
   } catch (err) {
